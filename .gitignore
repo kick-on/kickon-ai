@@ -58,3 +58,7 @@ build/
 
 huggingface_cache/
 .cache/
+
+# HuggingFace model
+all-MiniLM-L6-v2/
+all-MiniLM-L6-v2.tar.gz
