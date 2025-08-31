@@ -4,7 +4,9 @@ from langchain.docstore.document import Document
 from typing import List
 
 # 임베딩 모델 로드 (저장할 때와 동일해야 함)
-embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+embedding_model = HuggingFaceEmbeddings(
+    model_name="/opt/models/all-MiniLM-L6-v2"
+)
 
 def reformulate_query(raw_topic: str) -> str:
     """
