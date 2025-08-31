@@ -23,7 +23,9 @@ S3_PREFIX = os.getenv("S3_PREFIX")
 FAISS_DIR = "kickon_vector_search/faiss_index"
 
 # 임베딩 모델 설정 (저장 시와 일치해야 함)
-embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
+embedding_model = HuggingFaceEmbeddings(
+    model_name="/opt/models/all-MiniLM-L6-v2"
+)
 
 def save_faiss_index(embeddings, metadatas):
     """FAISS 인덱스를 생성하고 저장 + S3 업로드"""

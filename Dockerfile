@@ -3,12 +3,14 @@ FROM public.ecr.aws/lambda/python:3.9
 
 # 시스템 패키지 설치 (Rust + build-essential)
 RUN yum install -y gcc gcc-c++ make curl && \
-    curl https://sh.rustup.rs -sSf | sh -s -- -y
+    curl https://sh.rustup.rs -sSf | sh -s -- -y && \
+    echo 'source $HOME/.cargo/env' >> ~/.bashrc
 
-# 캐시 디렉토리 및 모델 디렉토리 환경 변수
+# 환경 변수 설정
 ENV HF_HOME=/root/.cache/huggingface
-ENV MODEL_DIR=/models/all-MiniLM-L6-v2
+ENV MODEL_DIR=/opt/models/all-MiniLM-L6-v2
 ENV SENTENCE_TRANSFORMERS_HOME=$MODEL_DIR
+ENV PATH=$HOME/.cargo/bin:$PATH
 
 # requirements.txt 복사 및 패키지 설치 (Rust 환경 포함)
 COPY requirements.txt .
@@ -16,9 +18,11 @@ RUN /bin/bash -c "source $HOME/.cargo/env && \
     pip install --upgrade pip && \
     pip install -r requirements.txt"
 
-# HuggingFace 모델 미리 다운로드
-RUN /bin/bash -c "source $HOME/.cargo/env && \
-    python3 -c 'from huggingface_hub import snapshot_download; snapshot_download(\"sentence-transformers/all-MiniLM-L6-v2\", local_dir=\"/models/all-MiniLM-L6-v2\")'"
+# S3에서 모델 압축 파일 다운로드 및 압축 해제
+RUN mkdir -p /opt/models && \
+    curl -o /opt/model.tar.gz https://kickon-ai-bucket.s3.ap-northeast-2.amazonaws.com/models/all-MiniLM-L6-v2.tar.gz && \
+    tar -xzf /opt/model.tar.gz -C /opt/models && \
+    rm /opt/model.tar.gz
 
 # 나머지 코드 복사
 COPY . .

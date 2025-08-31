@@ -55,7 +55,6 @@ outputs/
 *.onnx
 
 .cache/huggingface/
-all-MiniLM-L6-v2/
 all-MiniLM-L6-v2.tar.gz
 
 kickon_vector_search/faiss_index/
