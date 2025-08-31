@@ -5,6 +5,9 @@ __pycache__/
 *.pyd
 *.so
 
+venv/
+.venv/
+
 # Secrets & environments
 .env
 .env.*
@@ -44,6 +47,11 @@ pip-wheel-metadata/
 .idea/
 *.code-workspace
 
-# Docker artifacts
-.dockerignore
-Dockerfile
+data/
+models/
+outputs/
+*.pt
+*.bin
+*.onnx
+
+.cache/huggingface/

@@ -57,3 +57,4 @@ build/
 *.egg
 
 huggingface_cache/
+.cache/
