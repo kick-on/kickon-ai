@@ -2,11 +2,17 @@ from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.docstore.document import Document
 from typing import List
+import os
 
-# 임베딩 모델 로드 (저장할 때와 동일해야 함)
-embedding_model = HuggingFaceEmbeddings(
-    model_name="/opt/models/all-MiniLM-L6-v2"
-)
+# Hugging Face offline mode 설정
+os.environ["TRANSFORMERS_OFFLINE"] = "1"
+os.environ["HF_DATASETS_OFFLINE"] = "1"
+
+try:
+    embedding_model = HuggingFaceEmbeddings(model_name="/opt/models/all-MiniLM-L6-v2")
+except Exception as e:
+    print("❌ HuggingFaceEmbeddings 생성 실패:", str(e))
+    raise
 
 def reformulate_query(raw_topic: str) -> str:
     """

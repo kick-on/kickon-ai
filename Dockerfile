@@ -2,7 +2,7 @@
 FROM public.ecr.aws/lambda/python:3.9
 
 # 시스템 패키지 설치 (Rust + build-essential)
-RUN yum install -y gcc gcc-c++ make curl tar && \
+RUN yum install -y gcc gcc-c++ make curl tar gzip && \
     curl https://sh.rustup.rs -sSf | sh -s -- -y && \
     echo 'source $HOME/.cargo/env' >> ~/.profile
 
@@ -12,6 +12,8 @@ ENV HF_HOME=/root/.cache/huggingface
 ENV MODEL_DIR=/opt/models/all-MiniLM-L6-v2
 ENV SENTENCE_TRANSFORMERS_HOME=$MODEL_DIR
 ENV PATH=$HOME/.cargo/bin:$PATH
+ENV TRANSFORMERS_OFFLINE=1
+ENV HF_DATASETS_OFFLINE=1
 
 # requirements.txt 복사 및 패키지 설치 (Rust 환경 포함)
 COPY requirements.txt .
