@@ -4,7 +4,7 @@ from app.bots.post_generation_bots import (
     run_pregame_bot, run_postgame_focus_bot, run_realtime_bot, run_trend_bot
 )
 
-def lambda_handler(event):
+def lambda_handler(event, context):
     task = event.get("task")
 
     if task == "generate_daily_schedule":
