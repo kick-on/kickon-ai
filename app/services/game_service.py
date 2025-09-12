@@ -47,4 +47,4 @@ def has_game_today(db: Session):
         .all()
     )
 
-    return games  # list[Game] 반환
+    return games    
