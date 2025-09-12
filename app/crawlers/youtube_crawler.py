@@ -56,7 +56,7 @@ def search_videos(query, max_results=10):
     ]
 
 # 댓글 크롤링 및 저장
-def crawl_and_store_comments_by_query(query):
+def crawl_youtube_comments_by_query(query):
     print(f"\n🔍 [1] 검색 쿼리: {query}")
 
     try:
@@ -66,13 +66,14 @@ def crawl_and_store_comments_by_query(query):
         print(f"❌ 유튜브 검색 중 문제 발생: {e}")
         return
     
+    downloader = YoutubeCommentDownloader()
+    results = []
+    
     for video in videos:
         video_id = video["video_id"]
         print(f"\n🎬 [3] 영상 제목: {video['title']} / ID: {video_id}")
-
-        downloader = YoutubeCommentDownloader()
         video_url = f"https://www.youtube.com/watch?v={video_id}"
-
+        
         comment_data = []
 
         try:
@@ -89,7 +90,7 @@ def crawl_and_store_comments_by_query(query):
                 comment_data.append(comment_obj)
         except Exception as e:
             print(f"❌ 댓글 크롤링 중 문제 발생: {e}")
-            return
+            continue
         
         print(f"✅ [4] 댓글 수집 완료: {len(comment_data)}개")
 
@@ -109,7 +110,6 @@ def crawl_and_store_comments_by_query(query):
             "comments": comment_data
         }
 
-        try:
-            save_youtube_comment_doc(doc)
-        except Exception as e:
-            print(f"❌ MongoDB 저장 중 문제 발생: {e}")
+        results.append(doc)
+
+    return results

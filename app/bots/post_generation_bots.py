@@ -1,6 +1,6 @@
 import os
 import shutil
-from app.crawlers.youtube_crawler import crawl_and_store_comments_by_query
+from app.crawlers.youtube_crawler import crawl_youtube_comments_by_query
 from app.crawlers.fmkorea_crawler import crawl_fmkorea_board 
 from app.rag.extract_top_comments import extract_top_comments_per_video, extract_top_fmkorea_posts
 from app.services.user_service import get_random_ai_user
@@ -114,7 +114,7 @@ def _generate_post_with_source(db, topic: str, source_loader_fn, source_name: st
 
 def _generate_post_with_youtube(db, topic: str):
     try:
-        crawl_and_store_comments_by_query(topic)
+        crawl_youtube_comments_by_query(topic)
     except Exception as e:
         print(f"❌ 유튜브 댓글 크롤링 실패: {e}")
         return
