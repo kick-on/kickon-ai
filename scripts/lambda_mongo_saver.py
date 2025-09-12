@@ -1,7 +1,8 @@
 import json
-from app.db.mongo.mongo_utils import save_youtube_comment_doc, save_fmkorea_post_doc
 
 def lambda_handler(event, context):
+    from app.db.mongo.mongo_utils import save_youtube_comment_doc, save_fmkorea_post_doc
+
     print("📩 Event:", event)
 
     for record in event["Records"]:

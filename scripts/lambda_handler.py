@@ -6,6 +6,7 @@ from app.db.sql.session import SessionLocal
 from app.bots.post_generation_bots import (
     run_pregame_bot, run_postgame_focus_bot, run_realtime_bot, run_trend_bot
 )
+from scripts.lambda_eventbridge import lambda_handler as eventbridge_handler
 from scripts.lambda_crawler import lambda_handler as crawler_handler
 from scripts.lambda_mongo_saver import lambda_handler as mongo_saver_handler
 from scripts.lambda_rds_saver import lambda_handler as rds_handler
@@ -34,6 +35,11 @@ def lambda_handler(event, context):
             return {"statusCode": 200, "body": "Daily Game Schedule Registered"}
         finally:
             db.close()
+
+    # ----------------- Eventbridge -----------------
+    elif role == "eventbridge":
+        eventbridge_result = eventbridge_handler(event, context)
+        return {"statusCode": 200, "body": f"EventBridge processed: {eventbridge_result}"}
     
     # ----------------- Crawler -----------------
     elif role == "crawler":
